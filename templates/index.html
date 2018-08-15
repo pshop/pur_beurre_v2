@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pur Beurre</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        Vous êtes connecté, {{ user.username }}
+    {% else %}
+        <p><a href="{% url 'login' %}">Connectez vous</a></p>
+        <p><a href="{% url 'register' %}">Créez un nouveau compte</a></p>
+    {% endif %}
+</body>
+</html>
