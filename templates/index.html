@@ -6,7 +6,7 @@
 </head>
 <body>
     {% if user.is_authenticated %}
-        <p>Vous êtes connecté, {{ user.username }}</p>
+        <p>Vous êtes connecté, {{ user.first_name }}</p>
         <p><a href="{% url 'deconnect' %}">Déconnecter</a></p>
     {% else %}
         <p><a href="{% url 'login_view' %}">Connectez vous</a></p>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm
-from django.contrib.auth.models import User
+from core_app.models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
@@ -26,18 +26,21 @@ def login_view(request):
 def register(request):
 
     form = RegisterForm(request.POST or None)
+    error = False
 
     if form.is_valid():
-        user = User.objects.create()
-        user.username = form.cleaned_data['username']
-        user.set_password(form.cleaned_data['password'])
-        user.email = form.cleaned_data['email']
-        user.save()
 
-        return redirect('/')
+        if form.cleaned_data['password'] == form.cleaned_data['password_check']:
+            user = CustomUser.objects.create()
+            user.first_name = form.cleaned_data['username']
+            user.set_password(form.cleaned_data['password'])
+            user.email = form.cleaned_data['email']
+            user.save()
+            return redirect('/')
+        else:
+            error = True
 
-    else:
-        return render(request, 'users/register.html', locals())
+    return render(request, 'users/register.html', locals())
 
 def deconnect(request):
     logout(request)
