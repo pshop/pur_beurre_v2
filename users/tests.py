@@ -10,8 +10,7 @@ def create_valid_user():
     return user
 
 def log_user(user):
-    auth_user = auth.authenticate(username='mail@gmail.com', password='motdepasse')
-    auth.login(request, auth_user)
+    pass
 # Create your tests here.
 
 class IndexTests(TestCase):
@@ -23,3 +22,17 @@ class IndexTests(TestCase):
         self.assertFalse(response.context['user'].is_authenticated)
 
     def test_logged_user(self):
+
+        create_valid_user()
+
+        response = self.client.post(
+         '/user/login/',
+         {'username':'mail@gmail.com',
+            'password':'motdepasse'},
+         follow=True
+        )
+
+        # user = CustomUser.objects.get(email='mail@gmail.com')
+
+        # self.assertEqual(user, None)
+        self.assertTrue(response.context['user'].is_authenticated)

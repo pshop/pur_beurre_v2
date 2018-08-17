@@ -8,5 +8,5 @@ class RegisterForm(forms.Form):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=150, label="Entrez votre nom d'utilisateur")
+    email = forms.CharField(max_length=150, label="Entrez votre nom d'utilisateur")
     password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
