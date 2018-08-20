@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from django.contrib import auth
 
-from core_app.models import CustomUser
+from .models import CustomUser
 
 class IndexTests(TestCase):
 
