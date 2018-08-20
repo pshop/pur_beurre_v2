@@ -4,15 +4,6 @@ from django.contrib import auth
 
 from core_app.models import CustomUser
 
-def create_valid_user():
-    user = CustomUser(email='mail@gmail.com', first_name='pseudo', password='motdepasse')
-    user.save()
-    return user
-
-def log_user(user):
-    pass
-# Create your tests here.
-
 class IndexTests(TestCase):
 
     def test_no_user_logged(self):
@@ -21,18 +12,17 @@ class IndexTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFalse(response.context['user'].is_authenticated)
 
-    def test_logged_user(self):
+    def test_user_can_login(self):
+        CustomUser.objects.create_user(email='mail@gmail.com', password='motdepasse', first_name='moi')
 
-        create_valid_user()
+        is_authenticated = self.client.login(username='mail@gmail.com', password='motdepasse')
+        self.assertTrue(is_authenticated)
 
-        response = self.client.post(
-         '/user/login/',
-         {'username':'mail@gmail.com',
-            'password':'motdepasse'},
-         follow=True
-        )
+    def test_auth_user_recognized_on_index(self):
+        CustomUser.objects.create_user(email='mail@gmail.com', password='motdepasse', first_name='moi')
 
-        # user = CustomUser.objects.get(email='mail@gmail.com')
-
-        # self.assertEqual(user, None)
+        self.client.login(username='mail@gmail.com', password='motdepasse')
+        response = self.client.get('/')
         self.assertTrue(response.context['user'].is_authenticated)
+
+
