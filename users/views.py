@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import Http404, HttpResponse
 from .forms import RegisterForm, LoginForm
 from .models import CustomUser
 from django.contrib.auth import authenticate, login, logout
@@ -47,5 +48,12 @@ def deconnect(request):
     return redirect('/')
 
 
-def profile(request):
-    pass
+def profile(request, username):
+
+    if request.user.is_authenticated and request.user.first_name == username:
+        return render(request, 'users/profile.html', {'username': username})
+
+    else:
+        raise Http404
+
+
