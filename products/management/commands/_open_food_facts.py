@@ -2,11 +2,15 @@ import openfoodfacts
 import requests
 import urllib.request
 import re
+import sys
+from termcolor import colored
 
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.db import IntegrityError
+from django.core.management.base import CommandError
 
-from products.models import Product
+from products.models import Product, Category
 
 def save_image_from_url(model, url):
     r = requests.get(url)
@@ -29,7 +33,8 @@ class OpenFoodFacts():
         cat_list = []
 
         for cat in result['products'][0]['categories_tags']:
-            cat_list.append(cat.split(':')[-1])
+            cat_name = cat.split(':')[-1]
+            cat_list.append(cat_name.replace('-', ' '))
 
         return cat_list
 
@@ -41,13 +46,14 @@ class OpenFoodFacts():
             "tag_contains_0": "contains",
             "tag_0": category,
             "sort_by": "unique_scans",
-            "page_size": "100",
+            "page_size": "200",
             "json":"1,"
         })
 
         # counter for 10 products of each grades category :
         a_b_grade = 0
         c_e_garde = 0
+
         #tuple of needed keys
         keys = ('id',
                 'nutrition_grades',
@@ -58,55 +64,91 @@ class OpenFoodFacts():
                 'url',
                 'categories_tags',
                 )
-        products_list = []
+        counter = 1
+
+        sys.stdout.write(f" !!! {len(search_result['products'])} résultats obtenus pour {category}\n")
 
         for product in search_result['products']:
 
+            sys.stdout.write(colored(f"produit numero {counter}\n", 'blue'))
+            counter += 1
+
             # if i got enough products i break the for loop
             if a_b_grade > 10 and c_e_garde > 10:
+                sys.stdout.write(colored(f"nous avons assez de produits\n\n", 'red'))
                 break
 
             # i check if the product has all the needed keys
             if all(key in product for key in keys):
 
-                # test if product has a nutrition grade
-                if re.match('[a-b]', product['nutrition_grades']) and a_b_grade < 10:
-                    a_b_grade += 1
-                elif re.match('[c-e]', product['nutrition_grades']) and c_e_garde < 10:
-                    c_e_garde += 1
-                else:
-                    continue
+                sys.stdout.write(colored(f"Le produit {product['product_name']} id: {product['id']} contient les clés necessaires\n", 'green'))
+
+                sys.stdout.write("CAT COUNTER:\n")
+                sys.stdout.write(f"{c_e_garde} prduits C-E pour {category}\n")
+                sys.stdout.write(f"{a_b_grade} produits A-B pour {category}\n")
 
                 # and if there are no similar entries in the base
                 if not Product.objects.filter(name=product['product_name']) and\
                     not Product.objects.filter(id=product['id']):
 
-                    product_infos = {}
+                    # test if product has a nutrition grade
+                    if re.match('[a-b]', product['nutrition_grades']) and a_b_grade < 10:
+                        a_b_grade += 1
+                    elif re.match('[c-e]', product['nutrition_grades']) and c_e_garde < 10:
+                        c_e_garde += 1
+                    else:
+                        sys.stdout.write(colored(f"Nous avons suffisament de produits avec une note {product['nutrition_grades']}\n\n", 'yellow'))
+                        continue
+
+                    sys.stdout.write(colored(f"{product['product_name']} id: {product['id']} ajouté en base\n\n", 'green'))
+
+                    prod = Product(id=product['code'])
 
                     # downloading products pictures
-                    urllib.request.urlretrieve(product['image_front_url'], f"media/pictures/{product['id']}.jpg")
+                    try:
+                        urllib.request.urlretrieve(product['image_front_url'], f"media/pictures/{product['id']}.jpg")
+                    except:
+                        sys.stdout.write(colored("Image inaccessible\n\n","red"))
+                        continue
+                    prod.picture = File(open(f"media/pictures/{product['id']}.jpg", "rb"))
 
                     # downloading nutrition picture
-                    urllib.request.urlretrieve(product['image_nutrition_url'], f"media/nutrition/{product['id']}.jpg")
+                    try:
+                        urllib.request.urlretrieve(product['image_nutrition_url'], f"media/nutrition/{product['id']}.jpg")
+                    except:
+                        sys.stdout.write(colored("Image inaccessible\n\n", "red"))
+                        continue
+                    prod.nutrition = File(open(f"media/nutrition/{product['id']}.jpg", "rb"))
+
+                    prod.nutriscore = product['nutrition_grades']
+                    prod.name = product['product_name']
+                    prod.summation = product['generic_name']
+                    prod.external_link = product['url']
+                    prod.save()
 
                     # getting product categories
-                    categories = []
                     for cat in product['categories_tags']:
-                        categories.append(cat.split(':')[-1])
+                        label = cat.split(':')[-1]
+                        label = label.replace('-', ' ')
 
-                    product_infos['id'] = product['code']
-                    product_infos['nutriscore'] = product['nutrition_grades']
-                    product_infos['name'] = product['product_name']
-                    product_infos['summation'] = product['generic_name']
-                    product_infos['external_link'] = product['url']
-                    product_infos['categories'] = categories
+                        try:
+                            c = Category.objects.get(label=label)
+                        except Category.DoesNotExist:
+                            c = Category(label=label)
+                            c.save()
 
-                    products_list.append(product_infos)
+                        prod.categories.add(c)
+                        prod.save()
 
+                else:
+                    sys.stdout.write(colored(f"{product['product_name']} id: {product['id']} DEJA en BASE \n\n", 'red'))
             else:
-                continue
-
-        return products_list
+                for key in keys:
+                    if key not in product:
+                        try:
+                            sys.stdout.write(colored(f"la clé {key} n'est pas dans {product['product_name']} id: {product['id']}\n\n", 'red'))
+                        except KeyError:
+                            sys.stderr.write(colored('pas de champs id\n\n', 'red'))
 
 
 if __name__ == '__main__':

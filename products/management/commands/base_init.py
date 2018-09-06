@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import IntegrityError
 from products.management.commands._open_food_facts import OpenFoodFacts
-from products.models import Category
+from products.models import Category, Product
 
 
 class Command(BaseCommand):
@@ -21,7 +21,11 @@ class Command(BaseCommand):
             except IntegrityError as e:
                 CommandError(f"{category} is already in base")
 
-        self.stdout.write(self.style.SUCCESS(len(_.get_products_by_category('breakfasts'))))
+
+        categories = Category.objects.values_list('label', flat=True)
+
+        for cat in categories:
+            _.get_products_by_category(cat)
 
 
 

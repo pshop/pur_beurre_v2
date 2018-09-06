@@ -19,9 +19,9 @@ class Product(models.Model):
     )
     nutriscore = models.CharField(max_length=1)
     name = models.CharField(max_length=150, unique=True)
-    summation = models.CharField(max_length=300, blank=True)
-    picture = models.ImageField(upload_to='images/pictures/')
-    nutrition = models.ImageField(upload_to='images/nutrition/')
+    summation = models.CharField(max_length=300)
+    picture = models.ImageField(upload_to='media/pictures/')
+    nutrition = models.ImageField(upload_to='media/nutrition/')
     external_link = models.URLField()
     categories = models.ManyToManyField(
         Category,
