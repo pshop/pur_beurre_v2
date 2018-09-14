@@ -4,13 +4,9 @@
     <p><strong>Utilisateur inconnu ou mauvais mot de passe</strong></p>
 {% endif %}
 
-{% if user.is_authenticated %}
-    <p>Vous êtes connecté</p>
-    <p><a href="{% url 'index' %}">Home</a></p>
-{% else %}
-    <form action="{% url 'login_view' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit"/>
-    </form>
-{% endif %}
+
+<form action="{% url 'login_view' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit"/>
+</form>

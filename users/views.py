@@ -17,12 +17,13 @@ def login_view(request):
             user = authenticate(username=email, password=password)
             if user:
                 login(request, user)
+                render(request, 'products/index.html', locals())
             else:
                 error = True
-    else:
-        form = LoginForm()
 
+    form = LoginForm()
     return render(request, 'users/login.html', locals())
+
 
 def register(request):
 

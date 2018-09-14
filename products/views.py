@@ -1,22 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+
 from .forms import SearchBar
-from django.views.generic import TemplateView
+import sys
 
 # Create your views here.
 
 def search_products(request):
+    print("Vue search_products")
+    if request.method == "POST":
+        form = SearchBar(request.POST or None)
+        if form.is_valid():
+            search_term = form.cleaned_data['content']
+            print(search_term)
 
+            redirect('display_results', data=search_term)
+    else:
+        print("No term received")
+        form = SearchBar()
 
-    form = SearchBar(request.POST or None)
+    return render(request, 'products/index.html', locals())
 
-    if form.is_valid():
-        search_term = form.cleaned_data['content']
+def display_results(request, data):
 
-        return HttpResponse(
-            f"""
-            <p>produit recherché : {search_term}<p>
-            """
-        )
-
+    return HttpResponse(
+        f"Vous cherchez {data}"
+    )
 

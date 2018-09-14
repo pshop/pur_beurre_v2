@@ -6,20 +6,31 @@ import sys
 from termcolor import colored
 
 from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
-from django.db import IntegrityError
-from django.core.management.base import CommandError
 
 from products.models import Product, Category
 
-def save_image_from_url(model, url):
-    r = requests.get(url)
 
-    img_temp = NamedTemporaryFile(delete=True)
-    img_temp.write(r.content)
-    img_temp.flush()
+def test_image_url(url):
+    """
+    Test in an url is written the right way
+    if it return a http 200 response
+    If the pointed file is a valid image format
+    :param url:
+    Entrer a string(url)
+    :return:
+    True if url is valid
+    """
+    regex = r"(^http|https)(://)(.*)(\.)(jpg|jpeg|png)"
 
-    model.picture.save("image.jpg", File(img_temp), save=True)
+    if re.match(regex, url) is not None:
+        r = requests.get(url)
+        if r.status_code == 200:
+            return True
+    else:
+        return False
+
+
+
 
 class OpenFoodFacts():
 
@@ -46,7 +57,7 @@ class OpenFoodFacts():
             "tag_contains_0": "contains",
             "tag_0": category,
             "sort_by": "unique_scans",
-            "page_size": "200",
+            "page_size": "1000",
             "json":"1,"
         })
 
@@ -104,21 +115,13 @@ class OpenFoodFacts():
 
                     prod = Product(id=product['code'])
 
-                    # downloading products pictures
-                    try:
-                        urllib.request.urlretrieve(product['image_front_url'], f"media/pictures/{product['id']}.jpg")
-                    except:
-                        sys.stdout.write(colored("Image inaccessible\n\n","red"))
+                    # testing and saving images URLs
+                    if test_image_url(product['image_front_url']) and\
+                        test_image_url(product['image_nutrition_url']):
+                        prod.picture = product['image_front_url']
+                        prod.nutrition = product['image_nutrition_url']
+                    else:
                         continue
-                    prod.picture = File(open(f"media/pictures/{product['id']}.jpg", "rb"))
-
-                    # downloading nutrition picture
-                    try:
-                        urllib.request.urlretrieve(product['image_nutrition_url'], f"media/nutrition/{product['id']}.jpg")
-                    except:
-                        sys.stdout.write(colored("Image inaccessible\n\n", "red"))
-                        continue
-                    prod.nutrition = File(open(f"media/nutrition/{product['id']}.jpg", "rb"))
 
                     prod.nutriscore = product['nutrition_grades']
                     prod.name = product['product_name']

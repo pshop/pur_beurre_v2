@@ -14,6 +14,7 @@ class Command(BaseCommand):
 
         _ = OpenFoodFacts()
 
+        Category.objects.all().delete()
         for category in _.get_nutella_categories():
             try:
                 cat = Category(label=category)
