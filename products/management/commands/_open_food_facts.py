@@ -7,7 +7,7 @@ from termcolor import colored
 
 from django.core.files import File
 
-from products.models import Product, Category
+from products.models import Product, Category, Specificity
 
 
 def test_image_url(url):
@@ -43,7 +43,7 @@ class OpenFoodFacts():
 
         cat_list = []
 
-        for cat in result['products'][0]['categories_tags']:
+        for cat in result['products'][0]['categories_hierarchy']:
             cat_name = cat.split(':')[-1]
             cat_list.append(cat_name.replace('-', ' '))
 
@@ -73,7 +73,7 @@ class OpenFoodFacts():
                 'image_front_url',
                 'image_nutrition_url',
                 'url',
-                'categories_tags',
+                'categories_hierarchy',
                 )
         counter = 1
 
@@ -99,7 +99,7 @@ class OpenFoodFacts():
                 sys.stdout.write(f"{a_b_grade} produits A-B pour {category}\n")
 
                 # and if there are no similar entries in the base
-                if not Product.objects.filter(name=product['product_name']) and\
+                if not Product.objects.filter(name=product['product_name'].lower()) and\
                     not Product.objects.filter(id=product['id']):
 
                     # test if product has a nutrition grade
@@ -124,13 +124,14 @@ class OpenFoodFacts():
                         continue
 
                     prod.nutriscore = product['nutrition_grades']
-                    prod.name = product['product_name']
+                    prod.name = product['product_name'].lower()
                     prod.summation = product['generic_name']
                     prod.external_link = product['url']
                     prod.save()
 
                     # getting product categories
-                    for cat in product['categories_tags']:
+                    category_level = len(product['categories_hierarchy'])
+                    for cat in product['categories_hierarchy']:
                         label = cat.split(':')[-1]
                         label = label.replace('-', ' ')
 
@@ -140,8 +141,8 @@ class OpenFoodFacts():
                             c = Category(label=label)
                             c.save()
 
-                        prod.categories.add(c)
-                        prod.save()
+                        Specificity(category=c, product=prod, level=category_level).save()
+                        category_level -=1
 
                 else:
                     sys.stdout.write(colored(f"{product['product_name']} id: {product['id']} DEJA en BASE \n\n", 'red'))
@@ -152,10 +153,3 @@ class OpenFoodFacts():
                             sys.stdout.write(colored(f"la clé {key} n'est pas dans {product['product_name']} id: {product['id']}\n\n", 'red'))
                         except KeyError:
                             sys.stderr.write(colored('pas de champs id\n\n', 'red'))
-
-
-if __name__ == '__main__':
-
-    _ = OpenFoodFacts()
-
-    print(_.get_products_by_category('breakfasts'))

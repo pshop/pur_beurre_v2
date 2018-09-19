@@ -14,7 +14,7 @@ def search_products(request):
             search_term = form.cleaned_data['content']
             print(search_term)
 
-            redirect('display_results', data=search_term)
+            return redirect('display_results', data=search_term)
     else:
         print("No term received")
         form = SearchBar()
@@ -23,7 +23,8 @@ def search_products(request):
 
 def display_results(request, data):
 
+    print('display result')
     return HttpResponse(
-        f"Vous cherchez {data}"
+        f"Vous cherche {data}"
     )
 
