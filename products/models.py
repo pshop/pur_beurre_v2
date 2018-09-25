@@ -1,12 +1,15 @@
 from django.db import models
-from users.models import CustomUser
-from products.management.local_search import ProductManager
 
+from users.models import CustomUser
+from .managers import ProductManager
+
+
+#MODELS
 class Category(models.Model):
 
     label = models.CharField(max_length=150, unique=True)
 
-    class meta:
+    class Meta:
         verbose_name = 'categorie'
 
     def __str__(self):
@@ -33,7 +36,7 @@ class Product(models.Model):
         related_name='products'
     )
 
-    class meta:
+    class Meta:
         verbose_name = 'product'
 
     def __str__(self):

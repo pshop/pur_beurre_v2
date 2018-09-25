@@ -1,8 +1,17 @@
-{% if error %}
-    <p>Les mots de passe ne correspondent pas</p>
-{% endif %}
-<form action="{% url 'register' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="submit"/>
-</form>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pur Beurre</title>
+</head>
+<body>
+    {% if error %}
+        <p>Les mots de passe ne correspondent pas</p>
+    {% endif %}
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="submit"/>
+    </form>
+</body>
+</html>

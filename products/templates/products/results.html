@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pur Beurre</title>
+</head>
+<body>
+    <ul>
+        {% for prod in results %}
+            <li>{{ prod.name }}</li>
+            <ul>
+                <li>{{ prod.nutriscore }}</li>
+                <li>{{ prod.summation }}</li>
+            </ul>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*
+
 from products.models import Category, Product, Specificity
 from django.core.management.base import BaseCommand, CommandError
 

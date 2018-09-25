@@ -1,19 +1,18 @@
+# -*- coding: utf-8 -*
+
 import openfoodfacts
 import requests
-import urllib.request
 import re
 import sys
 from termcolor import colored
-
-from django.core.files import File
 
 from products.models import Product, Category, Specificity
 
 
 def test_image_url(url):
     """
-    Test in an url is written the right way
-    if it return a http 200 response
+    Test if an url is written the right way
+    if it returns a http 200 response
     If the pointed file is a valid image format
     :param url:
     Entrer a string(url)
@@ -100,7 +99,9 @@ class OpenFoodFacts():
 
                 # and if there are no similar entries in the base
                 if not Product.objects.filter(name=product['product_name'].lower()) and\
-                    not Product.objects.filter(id=product['id']):
+                    not Product.objects.filter(id=product['id']) and \
+                    product['product_name'] is not ''and \
+                    'test' not in product['product_name'].lower():
 
                     # test if product has a nutrition grade
                     if re.match('[a-b]', product['nutrition_grades']) and a_b_grade < 10:

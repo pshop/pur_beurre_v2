@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*
+
 from django.core.management.base import BaseCommand, CommandError
 from django.db import IntegrityError
 from products.management.commands._open_food_facts import OpenFoodFacts
@@ -27,6 +29,3 @@ class Command(BaseCommand):
 
         for cat in categories:
             _.get_products_by_category(cat)
-
-
-
