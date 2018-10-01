@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from .forms import RegisterForm, LoginForm
+from products.forms import SearchBar
 from .models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
+
 
 def login_view(request):
     error = False
@@ -12,17 +14,20 @@ def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST or None)
         if form.is_valid():
-            email=form.cleaned_data['email']
+            email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(username=email, password=password)
-            if user:
+            if user and user.first_name:
                 login(request, user)
+                form = SearchBar()
                 return render(request, 'products/index.html', locals())
             else:
                 error = True
 
     form = LoginForm()
-    return render(request, 'users/login.html', locals())
+    return render(request, 'users/login.html', {
+        'form':form,
+    })
 
 
 def register(request):
@@ -44,12 +49,13 @@ def register(request):
 
     return render(request, 'users/register.html', locals())
 
+
 def deconnect(request):
     logout(request)
     return redirect('/')
 
 
-def profile(request, username):
+def profile(request, username='superser'):
 
     if request.user.is_authenticated and request.user.first_name == username:
         return render(request, 'users/profile.html', {'username': username})

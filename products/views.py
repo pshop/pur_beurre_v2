@@ -6,8 +6,8 @@ from .forms import SearchBar
 
 # Create your views here.
 
+
 def search_products(request):
-    print("Vue search_products")
     if request.method == "POST":
         form = SearchBar(request.POST or None)
         if form.is_valid():
@@ -16,28 +16,30 @@ def search_products(request):
 
             return redirect('display_results', data=search_term)
     else:
-        print("No term received")
         form = SearchBar()
 
-    return render(request, 'products/index.html', locals())
+    return render(request, 'products/index.html', {
+        'form': form,
+    })
+
 
 def display_results(request, data):
     product = Product.objects.filter(name__contains=data)
-    #if i find the asked product in base
+    form = SearchBar()
+    # if i find the asked product in base
     if product:
-        #i first try to find 6 better products in base
+        # i first try to find 6 better products in base
         results = Product.objects.six_better_products(product[0])
-        #if i find my products i return 'em to the template
+        # if i find my products i return 'em to the template
         if results:
             return render(request, 'products/results.html', {
-                'results':results,
+                'results': results,
+                'form': form,
             })
     # else i start a request on the web API
-    else:
-        pass
-        # return redirect View api
-        # product = OpenFoodAPI.return_six_healthy_prods(data)
-
-
-
-#faire une deuxième vue dédiée à la recherche sur l'API
+    open_food = OpenFoodAPI()
+    results = open_food.return_six_healthy_prods(data)
+    return render(request, 'products/results.html', {
+        'results': results,
+        'form': form,
+    })

@@ -37,13 +37,30 @@ class OpenFoodAPI():
 
         return search_result['products']
 
+    def clean_prod_info(self, prod):
+
+        try:
+            cleaned_prod = {
+                'id': prod['code'],
+                'nutriscore': prod['nutrition_grades'],
+                'name': prod['product_name'],
+                'summation': prod['generic_name'],
+                'picture': prod['image_front_url'],
+                'nutrition': prod['image_nutrition_url'],
+                'external_link': prod['url'],
+                'categories': prod['categories_tags'],
+            }
+            return cleaned_prod
+        except:
+            return False
+
     def return_six_healthy_prods(self, search_term):
 
         # i take the result of the search
         initial_product = self.search_product(search_term)
         categories_list = []
         healthy_products_list = []
-        nutriscores = ['a','b','c','d','e']
+        nutriscores = ['a', 'b', 'c', 'd', 'e']
 
 
         #if a have a result
@@ -57,7 +74,9 @@ class OpenFoodAPI():
             for cat in categories_list:
                 for score in nutriscores:
                     for prod in self.search_by_cat_and_score(score, cat):
-                        healthy_products_list.append(prod)
+                        cleaned_prod = self.clean_prod_info(prod)
+                        if cleaned_prod:
+                            healthy_products_list.append(cleaned_prod)
                         if len(healthy_products_list) > 5:
                             break
                     if len(healthy_products_list) > 5:
@@ -67,9 +86,10 @@ class OpenFoodAPI():
 
             return healthy_products_list
 
-        #if not result return false
+        # if not result return false
         else:
             return False
+
 
 if __name__ == '__main__':
 
@@ -77,4 +97,4 @@ if __name__ == '__main__':
 
     results = open_food_api.return_six_healthy_prods('nutella')
     for prod in results:
-        print(prod['product_name'])
+        print(prod)
