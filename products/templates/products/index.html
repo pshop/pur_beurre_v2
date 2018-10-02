@@ -1,25 +1,7 @@
 {% extends 'products/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
-<!--
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Pur Beurre</title>
-</head>
-<body>
-    {% if user.is_authenticated %}
-        <p>Vous êtes connecté, {{ user.first_name }}</p>
-        <p>Allez à votre <a href="{% url 'profile' user.first_name %}">Profile</a></p>
-        <p><a href="{% url 'deconnect' %}">Déconnecter</a></p>
-    {% else %}
-        <p><a href="{% url 'login_view' %}">Connectez vous</a></p>
-        <p><a href="{% url 'register' %}">Créez un nouveau compte</a></p>
-    {% endif %}
-</body>
-</html>
--->
+
 {% block content %}
         <header class="masthead text-center text-white d-flex">
           <div class="container my-auto">

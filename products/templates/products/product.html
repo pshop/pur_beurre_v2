@@ -1,0 +1,31 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="header-products">
+  <div class="container">
+    <div class="justify-content-center row">
+      <div class="col-md-6 text-center">
+        <div class="background-product" style="background-image: url({{ prod.picture }})">
+          <div class="background-product-desc">
+            <h2 class="section-heading">{{ prod.name }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                <img src="{% static 'products/img/score/nutriscore-{{ prod.nutriscore }}.svg'%}">
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="{{ prod.nutrition }}">
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -32,9 +32,9 @@
       <div class="container">
         <div class="justify-content-center row">
           <div class="col-md-6 text-center">
-            <div class="background-product" style="background-image: url(https://static.openfoodfacts.org/images/products/544/900/004/5614/front_fr.79.full.jpg)">
+            <div class="background-product" style="background-image: url({{ searched_prod.image_front_url }})">
               <div class="background-product-desc">
-                <h2 class="section-heading">Nutella</h2>
+                <h2 class="section-heading">{{ searched_prod.product_name }}</h2>
               </div>
             </div>
           </div>
@@ -45,7 +45,7 @@
       <div class="container">
         <div class="row">
           <div class="col">
-          <h3 class="text-center">Vous pouvez remplacer <!-- Nom aliment --> NUTELLA par :</h3>
+          <h3 class="text-center">Vous pouvez remplacer {{ searched_prod.product_name }} par :</h3>
           </div>
         </div>
       </div>
@@ -53,22 +53,21 @@
 <!-- galerie -->
     <section class="p-0" id="portfolio">
       <div class="container-fluid p-0">
-        <div class="row no-gutters popup-gallery">
+        <div class="row no-gutters">
           {% for prod in results %}
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="{{ prod.picture }}">
+            <a class="portfolio-box" href="{% url 'product_info' prod.id %}">
               <div class="img-fluid background-product" style="background-image: url({{ prod.picture }})">
               </div>
               <div class="portfolio-box-caption">
                 <div class="nutriscore">{{ prod.nutriscore }}</div>
                 <div class="portfolio-box-caption-content">
-                  <div class="project-category text-faded">
-                    {{ prod.categories | first }}
-                  </div>
                   <div class="project-name">
-                    Project Name
+                    {{ prod.name|truncatewords:8 }}
                   </div>
-                  <button type="button" class="btn btn-outline-primary"><i class="fas fa-save"></i><span> Sauvegarder</span></button>
+                    {% if user.is_authenticated %}
+                    <button type="button" class="btn btn-outline-primary"><i class="fas fa-save"></i><span> Sauvegarder</span></button>
+                    {% endif %}
                 </div>
               </div>
             </a>
