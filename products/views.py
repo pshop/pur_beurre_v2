@@ -1,20 +1,20 @@
 from django.shortcuts import render, redirect
+from django.forms.models import model_to_dict
 from products.models import Product
 from products.openfoodapi import OpenFoodAPI
 import openfoodfacts
-import sys
+import logging
+from pprint import pprint, pformat
 
 from .forms import SearchBar
 
-# Create your views here.
-
+log = logging.getLogger(__name__)
 
 def search_products(request):
     if request.method == "POST":
         form = SearchBar(request.POST or None)
         if form.is_valid():
             search_term = form.cleaned_data['content']
-            print(search_term)
 
             return redirect('display_results', data=search_term)
     else:
@@ -46,24 +46,35 @@ def display_results(request, data):
         'searched_prod': searched_prod,
     })
 
-
 def product_info(request, product_id):
     form = SearchBar()
     open_food = OpenFoodAPI()
     error = False
 
-    prod = Product.objects.get(id=product_id)
-
-    if not prod:
+    try:
+        prod = Product.objects.get(id=product_id)
+        prod = model_to_dict(prod)
+        log.critical(pformat(prod))
+    except:
         try:
+            log.critical(f"CODE PRODUIT{product_id}")
             prod = openfoodfacts.products.get_product(product_id)
-            prod = open_food.clean_prod_info(prod)
+            prod = open_food.clean_prod_info(prod['product'])
+            log.critical(pformat(prod))
+
         except:
             error = True
+
+    if prod['nutriscore'] is not 'e':
+        nutriscore_img = f"nutriscore-{prod['nutriscore']}.svg"
+    else:
+        nutriscore_img = None
 
     return render(request,
                   'products/product.html',
                   {
                       'form': form,
                       'prod': prod,
+                      'nutriscore_img': nutriscore_img,
+                      'error': error,
                   })

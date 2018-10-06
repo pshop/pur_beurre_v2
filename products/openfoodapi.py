@@ -1,5 +1,9 @@
 import openfoodfacts
-import json
+import logging
+from pprint import pprint, pformat
+from itertools import product as cartesian_product
+
+log = logging.getLogger(__name__)
 
 class OpenFoodAPI():
 
@@ -8,12 +12,13 @@ class OpenFoodAPI():
 
     def search_product(self, search_term):
 
-        #if search for a product with the basic search
-        #of the openfoodfact api
+        # if search for a product with the basic search
+        # of the openfoodfact api
+        # TODO add limit to search
         search_result = openfoodfacts.products.search(search_term)
-        #if i find 1 or more products
+        # if i find 1 or more products
         if search_result['count'] > 0:
-            #i return the first product
+            # i return the first product
             return search_result['products'][0]
         else:
             return False
@@ -39,19 +44,31 @@ class OpenFoodAPI():
 
     def clean_prod_info(self, prod):
 
-        try:
-            cleaned_prod = {
-                'id': prod['code'],
-                'nutriscore': prod['nutrition_grades'],
-                'name': prod['product_name'],
-                'summation': prod['generic_name'],
-                'picture': prod['image_front_url'],
-                'nutrition': prod['image_nutrition_url'],
-                'external_link': prod['url'],
-                'categories': prod['categories_tags'],
-            }
-            return cleaned_prod
-        except:
+        cleaned_prod = {
+            'id': prod.get('code', '0'),
+            'nutriscore': prod.get('nutrition_grades', 'e'),
+            'name': prod.get('product_name', 'nameless'),
+            'summation': prod.get('generic_name', 'pas de descritpion'),
+            'picture': prod.get('image_front_url', 'no image'),
+            'nutrition': prod.get('image_nutrition_url'),
+            'external_link': prod.get('url'),
+            'categories': prod.get('categories_tags'),
+        }
+        return cleaned_prod
+
+    def check_has_needed_infos(self, prod):
+        keys = ('id',
+                'nutrition_grades',
+                'product_name',
+                'generic_name',
+                'image_front_url',
+                'image_nutrition_url',
+                'url',
+                'categories_hierarchy',
+                )
+        if all(key in prod for key in keys):
+            return True
+        else:
             return False
 
     def return_six_healthy_prods(self, search_term):
@@ -60,27 +77,28 @@ class OpenFoodAPI():
         initial_product = self.search_product(search_term)
         categories_list = []
         healthy_products_list = []
-        nutriscores = ['a', 'b', 'c', 'd', 'e']
+        nutriscores = ['a', 'b', 'c']
 
 
         #if a have a result
         if initial_product:
             #i take the categories in hierachy's reversed order
             # and put all that in a list
-            for cat in reversed(initial_product['categories_hierarchy']):
-                cat_name = cat.split(':')[-1]
+            for category in reversed(initial_product['categories_hierarchy']):
+                cat_name = category.split(':')[-1]
                 categories_list.append(cat_name.replace('-', ' '))
 
-            for cat in categories_list:
-                for score in nutriscores:
-                    for prod in self.search_by_cat_and_score(score, cat):
-                        cleaned_prod = self.clean_prod_info(prod)
+            for score, category in cartesian_product(nutriscores, categories_list):
+
+                for product in self.search_by_cat_and_score(score, category):
+                    if self.check_has_needed_infos(product):
+                        cleaned_prod = self.clean_prod_info(product)
+
                         if cleaned_prod:
                             healthy_products_list.append(cleaned_prod)
                         if len(healthy_products_list) > 5:
                             break
-                    if len(healthy_products_list) > 5:
-                        break
+
                 if len(healthy_products_list) > 5:
                     break
 
@@ -88,7 +106,7 @@ class OpenFoodAPI():
 
         # if not result return false
         else:
-            return False
+            return []
 
 
 if __name__ == '__main__':
