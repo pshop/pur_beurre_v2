@@ -15,7 +15,17 @@
             </div>
         </div>
     </section>
-
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="{{ message.tags }}">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <section>
         <div class="container">
             <div class="row">
@@ -34,6 +44,12 @@
                 <div class="col text-center">
                     <a href="{{ prod.url }}">Voir la fiche produit</a>
                 </div>
+                {% if user.is_authenticated %}
+                    <div class="col text-center">
+                        <a type="button" class="btn btn-outline-primary" href="{% url 'save_product' prod.id %}"><i
+                                class="fas fa-save"></i><span> Sauvegarder</span></a>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>

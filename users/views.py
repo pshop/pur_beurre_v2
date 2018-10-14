@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import Http404, HttpResponse
+from django.http import Http404
+from django.contrib.auth import authenticate, login, logout
+
 from .forms import RegisterForm, LoginForm
 from products.forms import SearchBar
 from .models import CustomUser
-from django.contrib.auth import authenticate, login, logout
+
 
 # Create your views here.
 
@@ -55,7 +57,7 @@ def deconnect(request):
     return redirect('/')
 
 
-def profile(request, username='superser'):
+def profile(request, username='superuser'):
 
     if request.user.is_authenticated and request.user.first_name == username:
         return render(request, 'users/profile.html', {'username': username})

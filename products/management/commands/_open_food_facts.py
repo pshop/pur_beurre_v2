@@ -127,7 +127,7 @@ class OpenFoodFacts():
                     prod.nutriscore = product['nutrition_grades']
                     prod.name = product['product_name'].lower()
                     prod.summation = product['generic_name']
-                    prod.external_link = product['url']
+                    prod.external_link = f"https://fr.openfoodfacts.org/produit/{product['code']}/"
                     prod.save()
 
                     # getting product categories

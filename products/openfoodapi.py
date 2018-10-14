@@ -1,6 +1,6 @@
 import openfoodfacts
 import logging
-from pprint import pprint, pformat
+
 from itertools import product as cartesian_product
 
 log = logging.getLogger(__name__)
@@ -51,7 +51,7 @@ class OpenFoodAPI():
             'summation': prod.get('generic_name', 'pas de descritpion'),
             'picture': prod.get('image_front_url', 'no image'),
             'nutrition': prod.get('image_nutrition_url'),
-            'external_link': prod.get('url'),
+            'external_link': f"https://fr.openfoodfacts.org/produit/{prod.get('code', '0')}/",
             'categories': prod.get('categories_tags'),
         }
         return cleaned_prod

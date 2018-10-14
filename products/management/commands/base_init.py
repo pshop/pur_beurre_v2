@@ -2,6 +2,7 @@
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import IntegrityError
+
 from products.management.commands._open_food_facts import OpenFoodFacts
 from products.models import Category, Product
 
