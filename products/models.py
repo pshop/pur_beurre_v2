@@ -61,7 +61,6 @@ class Product(models.Model):
     summation = models.CharField(max_length=300)
     picture = models.URLField()
     nutrition = models.URLField()
-    external_link = models.URLField()
     objects = ProductManager()
     categories = models.ManyToManyField(
         Category,

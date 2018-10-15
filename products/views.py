@@ -104,7 +104,6 @@ def save_product(request, product_id):
         summation=product['summation'],
         picture=product['picture'],
         nutrition=product['nutrition'],
-        # external_link=product['external_link'],
     )
 
     product.user.add(request.user)
