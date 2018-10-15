@@ -29,6 +29,7 @@ def login_view(request):
     form = LoginForm()
     return render(request, 'users/login.html', {
         'form':form,
+        'error':error,
     })
 
 

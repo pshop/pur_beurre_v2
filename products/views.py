@@ -104,7 +104,7 @@ def save_product(request, product_id):
         summation=product['summation'],
         picture=product['picture'],
         nutrition=product['nutrition'],
-        external_link=product['external_link'],
+        # external_link=product['external_link'],
     )
 
     product.user.add(request.user)
@@ -112,6 +112,16 @@ def save_product(request, product_id):
 
     messages.success(request, "le produit à bien été sauvegardé")
     return redirect(product_info, product_id)
+
+def display_favorites(request, user_name):
+    form = SearchBar()
+    products = Product.objects.filter(user__first_name=user_name)
+    return render(request,
+                  'products/favorites.html',
+                  {
+                      'results': products,
+                      'form': form,
+                  })
 
 
 
