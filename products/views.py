@@ -58,7 +58,8 @@ def display_results(request, data):
             'error': False
         })
     else:
-        pass
+        messages.error(request, f"Aucun résultat trouvé pour {data}")
+        return redirect('search')
 
 
 def product_info(request, product_id):
