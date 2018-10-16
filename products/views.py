@@ -21,8 +21,9 @@ def search_products(request):
         form = SearchBar(request.POST or None)
         if form.is_valid():
             search_term = form.cleaned_data['content']
-            # I have issues with accenduated characters
+            # I have issues with accented characters
             search_term = unidecode.unidecode(search_term)
+
             return redirect('display_results', data=search_term)
     else:
         form = SearchBar()
@@ -60,7 +61,6 @@ def display_results(request, data):
         pass
 
 
-
 def product_info(request, product_id):
     form = SearchBar()
     open_food = OpenFoodAPI()
@@ -90,6 +90,7 @@ def product_info(request, product_id):
                       'error': error,
                   })
 
+
 def save_product(request, product_id):
 
     open_food = OpenFoodAPI()
@@ -111,6 +112,7 @@ def save_product(request, product_id):
 
     messages.success(request, "le produit à bien été sauvegardé")
     return redirect(product_info, product_id)
+
 
 def display_favorites(request, user_name):
     form = SearchBar()
