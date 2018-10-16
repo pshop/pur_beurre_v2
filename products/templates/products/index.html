@@ -13,8 +13,13 @@
                     <hr>
                 </div>
                 <div class="col-lg-8 mx-auto">
-                    <p class="text-faded mb-5">Trouvez un produit de substitution pour ceux que vous consommez tous les
-                        jours.</p>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p class="text-faded mb-5 {{ message.tags }}">{{ message }}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-faded mb-5">Trouvez un produit de substitution pour ceux que vous consommez tous les jours.</p>
+                    {% endif %}
                     <div class=".center_div">
                         <form class="form-inline justify-content-center" action="{% url 'search' %}" method="post">
                             <div class="form-group">
