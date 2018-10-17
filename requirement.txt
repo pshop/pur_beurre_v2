@@ -1,4 +1,4 @@
-Django==2.1
+Django==2.1.2
 django-widget-tweaks==1.4.3
 openfoodfacts==0.1.0
 Pillow==5.2.0
