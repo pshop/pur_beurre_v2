@@ -46,6 +46,8 @@ def register(request):
             user.set_password(form.cleaned_data['password'])
             user.email = form.cleaned_data['email']
             user.save()
+            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            login(request, user)
             return redirect('/')
         else:
             error = True

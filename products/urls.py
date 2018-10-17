@@ -6,5 +6,6 @@ urlpatterns = [
     path('result/<data>', views.display_results, name='display_results'),
     path('product/<product_id>', views.product_info, name='product_info'),
     path('save/<product_id>', views.save_product, name='save_product'),
-    path('favorites/<user_name>', views.display_favorites, name='display_favorites')
+    path('delete/<product_id>', views.delete_product, name='delete_product'),
+    path('favorites/<user_name>', views.display_favorites, name='display_favorites'),
 ]

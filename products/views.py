@@ -2,17 +2,27 @@ from django.shortcuts import render, redirect
 from django.forms.models import model_to_dict
 from django.contrib import messages
 
-import openfoodfacts
-import logging
-import unidecode
-from pprint import pformat
-
 from .forms import SearchBar
 from .models import Product
 from .openfoodapi import OpenFoodAPI
 
+import openfoodfacts
+import logging
+import unidecode
 
 log = logging.getLogger(__name__)
+
+
+def product_is_favorite(product_id, user):
+    try:
+        product = Product.objects.get(id=product_id)
+        try:
+            product.user.get(id=user.id)
+            return True
+        except:
+            return False
+    except:
+        return False
 
 
 def search_products(request):
@@ -33,11 +43,12 @@ def search_products(request):
 
 
 def display_results(request, data):
-    product = Product.objects.filter(name__contains=data)
-    log.critical(f"product = {product}")
     form = SearchBar()
     open_food = OpenFoodAPI()
+
     results = []
+
+    product = Product.objects.filter(name__contains=data)
     # if i find the asked product in base
     if product:
         # i first try to find 6 better products in base
@@ -48,6 +59,12 @@ def display_results(request, data):
         results = open_food.return_six_healthy_prods(data)
 
     searched_prod = open_food.search_product(data)
+
+    for result in results:
+        if product_is_favorite(result['id'], request.user):
+            result.update({'is_favorite': True})
+        else:
+            result.update({'is_favorite': False})
 
     if searched_prod:
         return render(request, 'products/results.html', {
@@ -89,6 +106,7 @@ def product_info(request, product_id):
                       'prod': product,
                       'nutriscore_img': nutriscore_img,
                       'error': error,
+                      'is_favorite': product_is_favorite(product['id'], request.user)
                   })
 
 def save_product(request, product_id):
@@ -106,12 +124,20 @@ def save_product(request, product_id):
         picture=product['picture'],
         nutrition=product['nutrition'],
     )
-
     product.user.add(request.user)
     product.save()
-
     messages.success(request, "le produit à bien été sauvegardé")
     return redirect(product_info, product_id)
+
+
+def delete_product(request, product_id):
+
+    product = Product.objects.get(id=product_id)
+    product.user.remove(request.user)
+    messages.success(request, "le produit à bien été supprimé de vos favorits")
+    return redirect(product_info, product_id)
+
+
 
 def display_favorites(request, user_name):
     form = SearchBar()

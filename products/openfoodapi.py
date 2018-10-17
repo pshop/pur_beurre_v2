@@ -47,7 +47,7 @@ class OpenFoodAPI():
         cleaned_prod = {
             'id': prod.get('code', '0'),
             'nutriscore': prod.get('nutrition_grades', 'e'),
-            'name': prod.get('product_name', 'nameless'),
+            'name': prod.get('product_name', 'nameless').lower(),
             'summation': prod.get('generic_name', 'pas de descritpion'),
             'picture': prod.get('image_front_url', 'no image'),
             'nutrition': prod.get('image_nutrition_url'),

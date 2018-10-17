@@ -100,7 +100,7 @@ class OpenFoodFacts():
                 # and if there are no similar entries in the base
                 if not Product.objects.filter(name=product['product_name'].lower()) and\
                     not Product.objects.filter(id=product['id']) and \
-                    product['product_name'] is not ''and \
+                    product['product_name'] is not '' and \
                     'test' not in product['product_name'].lower():
 
                     # test if product has a nutrition grade

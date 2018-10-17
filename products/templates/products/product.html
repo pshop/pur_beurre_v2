@@ -44,11 +44,14 @@
                 <div class="col text-center">
                     <a href="{{ prod.external_link }}">Voir la fiche produit</a>
                 </div>
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated and not is_favorite %}
                     <div class="col text-center">
                         <a type="button" class="btn btn-outline-primary" href="{% url 'save_product' prod.id %}"><i
-                                class="fas fa-save"></i><span> Sauvegarder</span></a>
-                    </div>
+                                class="fas fa-save"></i><span> Sauvegarder</span></a></div>
+                {% elif user.is_authenticated and is_favorite %}
+                    <div class="col text-center">
+                        <a type="button" class="btn btn-outline-primary" href="{% url 'delete_product' prod.id %}"><i
+                                class="fas fa-times"></i><span> Supprimer des favorits</span></a></div>
                 {% endif %}
             </div>
         </div>
