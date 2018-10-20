@@ -25,6 +25,7 @@
     <!-- Custom styles for this template -->
     <link href="{% static 'products/creative.css' %}" rel="stylesheet">
     <link href="{% static 'products/style.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'products/img/fav.png'%}" />
 
   </head>
 
@@ -37,7 +38,7 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse-hack" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger">
@@ -75,7 +76,7 @@
 {% block content %}
 
 {% endblock %}
-    <footer>
+    <footer class="fixed-bottom bg-white">
       <div class="containter-fluid">
         <div class="row">
           <div class="col">

@@ -32,7 +32,7 @@
         </div>
     </section>
     <!-- galerie -->
-    <section class="p-0" id="portfolio">
+    <section class="p-0 last-section" id="portfolio">
         <div class="container-fluid p-0">
             <div class="row no-gutters">
                 {% for prod in results %}
@@ -46,6 +46,11 @@
                                     <div class="project-name">
                                         {{ prod.name|truncatewords:8 }}
                                     </div>
+                                    {% if user.is_authenticated and not prod.is_favorite %}
+                                        <button type="button" class="btn btn-outline-primary" onclick="location.href='http://google.com';"><i class="fas fa-save"></i><span> Sauvegarder</span></button>
+                                    {% elif  user.is_authenticated and prod.is_favorite %}
+                                        <button type="button" class="btn btn-outline-primary" onclick="location.href='http://google.com';"><i class="fas fa-times"></i><span> Supprimer</span></button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </a>

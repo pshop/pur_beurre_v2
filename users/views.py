@@ -61,9 +61,11 @@ def deconnect(request):
 
 
 def profile(request, username='superuser'):
-
+    form = SearchBar()
     if request.user.is_authenticated and request.user.first_name == username:
-        return render(request, 'users/profile.html', {'username': username})
+        return render(request, 'users/profile.html', {
+            'username': username,
+            'form': form})
 
     else:
         raise Http404
