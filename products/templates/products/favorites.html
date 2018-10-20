@@ -46,11 +46,7 @@
                                     <div class="project-name">
                                         {{ prod.name|truncatewords:8 }}
                                     </div>
-                                    {% if user.is_authenticated and not prod.is_favorite %}
-                                        <button type="button" class="btn btn-outline-primary" onclick="location.href='http://google.com';"><i class="fas fa-save"></i><span> Sauvegarder</span></button>
-                                    {% elif  user.is_authenticated and prod.is_favorite %}
-                                        <button type="button" class="btn btn-outline-primary" onclick="location.href='http://google.com';"><i class="fas fa-times"></i><span> Supprimer</span></button>
-                                    {% endif %}
+                                    <a type="button" class="btn btn-outline-primary del-favorite" href="{% url 'delete_product' prod.id %}"><i class="fas fa-times"></i><span> Supprimer</span></a>
                                 </div>
                             </div>
                         </a>
