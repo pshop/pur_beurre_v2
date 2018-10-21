@@ -23,8 +23,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = my_vars.SECRET_KEY
+
 
 ALLOWED_HOSTS = ['pur-beurre-v2.herokuapp.com']
 
@@ -154,12 +153,14 @@ if os.environ.get('ENV') == 'PRODUCTION':
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    # ...
-    if os.environ.get('ENV') == 'PRODUCTION':
         # ...
-        db_from_env = dj_database_url.config(conn_max_age=500)
-        DATABASES['default'].update(db_from_env)
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+    SECRET_KEY = os.environ['SECRET_KEY']
 
 else:
 
     DEBUG = True
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = my_vars.SECRET_KEY
