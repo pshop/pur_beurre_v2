@@ -5,10 +5,12 @@ from django.contrib import messages
 from .forms import SearchBar
 from .models import Product
 from .openfoodapi import OpenFoodAPI
+from users.models import CustomUser
 
 import openfoodfacts
 import logging
 import unidecode
+import inspect
 
 log = logging.getLogger(__name__)
 
@@ -19,9 +21,9 @@ def product_is_favorite(product_id, user):
         try:
             product.user.get(id=user.id)
             return True
-        except:
+        except CustomUser.DoesNotExist:
             return False
-    except:
+    except Product.DoesNotExist:
         return False
 
 
@@ -53,7 +55,8 @@ def display_results(request, data):
     if product:
         # i first try to find 6 better products in base
         results = Product.objects.six_better_products(product[0])
-        # if i find my products i return 'em to the template
+
+    # if i find my products i return 'em to the template
     if not results:
         # else i start a request on the web API
         results = open_food.return_six_healthy_prods(data)
@@ -61,6 +64,9 @@ def display_results(request, data):
     searched_prod = open_food.search_product(data)
 
     for result in results:
+        if isinstance(result, Product):
+            result = model_to_dict(result)
+        # if product_is_favorite(result['id'], request.user):
         if product_is_favorite(result['id'], request.user):
             result.update({'is_favorite': True})
         else:

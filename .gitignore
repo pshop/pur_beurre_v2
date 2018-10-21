@@ -3,3 +3,5 @@ __pycache__/
 env/
 media/nutrition
 media/pictures
+.idea
+my_vars.py

@@ -5,6 +5,7 @@ from itertools import product as cartesian_product
 
 log = logging.getLogger(__name__)
 
+
 class OpenFoodAPI():
 
     def __init__(self):
@@ -78,11 +79,9 @@ class OpenFoodAPI():
         categories_list = []
         healthy_products_list = []
         nutriscores = ['a', 'b', 'c']
-
-
-        #if a have a result
+        # if a have a result
         if initial_product:
-            #i take the categories in hierachy's reversed order
+            # i take the categories in hierachy's reversed order
             # and put all that in a list
             for category in reversed(initial_product['categories_hierarchy']):
                 cat_name = category.split(':')[-1]
