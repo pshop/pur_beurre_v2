@@ -6,3 +6,4 @@ media/pictures
 .idea
 pur_beurre_v2/my_vars.py
 db.sqlite3
+requirement.txt
