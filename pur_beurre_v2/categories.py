@@ -1,1 +1,0 @@
-# Liste de catégories pour l'initialisation de la base
