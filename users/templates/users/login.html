@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pur Beurre</title>
+</head>
+<body>
+    <h1>Bienvenue</h1>
+
+    {% if error %}
+        <p><strong>Utilisateur inconnu ou mauvais mot de passe</strong></p>
+    {% endif %}
+
+
+    <form action="{% url 'login_view' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit"/>
+    </form>
+    <a href="{% url 'register' %}">créer un compte</a>
+</body>
+</html>
+

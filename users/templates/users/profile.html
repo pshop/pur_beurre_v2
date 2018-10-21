@@ -1,0 +1,28 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+    <section id="header-products">
+        <div class="container">
+            <div class="justify-content-center row">
+                <div class="col-md-6 text-center">
+                    <div class="background-product" style="background-image: url({{ prod.picture }})">
+                        <div class="background-product-desc">
+                            <h1 class="text-center">A HOY!</h1>
+                            <h2 class="section-heading">{{ user.first_name }}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>{{ user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
