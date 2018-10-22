@@ -1,4 +1,4 @@
-import openfoodfacts
+import requests
 import logging
 
 from itertools import product as cartesian_product
@@ -16,7 +16,10 @@ class OpenFoodAPI():
         # if search for a product with the basic search
         # of the openfoodfact api
         # TODO add limit to search
-        search_result = openfoodfacts.products.search(search_term)
+        search_result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
+            "search_terms": search_term,
+            "page_size": "1",
+        })
         # if i find 1 or more products
         if search_result['count'] > 0:
             # i return the first product
@@ -28,7 +31,7 @@ class OpenFoodAPI():
 
         products_list = []
 
-        search_result = openfoodfacts.products.advanced_search({
+        search_result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
             "search_terms": "",
             "tagtype_0": "categories",
             "tag_contains_0": "contains",
