@@ -35,7 +35,7 @@ class OpenFoodFacts():
 
     def get_nutella_categories(self):
 
-        result = openfoodfacts.products.advanced_search({
+        result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
             "search_terms":'nutella',
             "page_size": "1",
         })
@@ -50,7 +50,7 @@ class OpenFoodFacts():
 
     def get_products_by_category(self, category):
 
-        search_result = openfoodfacts.products.advanced_search({
+        search_result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
             "search_terms":"",
             "tagtype_0": "categories",
             "tag_contains_0": "contains",
