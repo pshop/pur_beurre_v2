@@ -36,9 +36,8 @@
             <div class="row no-gutters">
                 {% for prod in results %}
                     <div class="col-lg-4 col-sm-6">
-                        <a class="portfolio-box" href="{% url 'product_info' prod.id %}">
-                            <div class="img-fluid background-product" style="background-image: url({{ prod.picture }})">
-                            </div>
+                        <div class="portfolio-box">
+                            <a class="img-fluid background-product" href="{% url 'product_info' prod.id %}" style="background-image: url({{ prod.picture }})"></a>
                             <div class="portfolio-box-caption">
                                 <div class="nutriscore">{{ prod.nutriscore }}</div>
                                 <div class="portfolio-box-caption-content">
@@ -52,7 +51,7 @@
                                     {% endif %}
                                 </div>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

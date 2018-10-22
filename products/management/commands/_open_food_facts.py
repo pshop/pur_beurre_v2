@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*
 
-import openfoodfacts
 import requests
 import re
 import sys
 from termcolor import colored
+import logging
+import pprint
 
 from products.models import Product, Category, Specificity
 
+log = logging.getLogger(__name__)
 
 def test_image_url(url):
     """
@@ -36,12 +38,12 @@ class OpenFoodFacts():
     def get_nutella_categories(self):
 
         result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
-            "search_terms":'nutella',
+            "search_terms": 'nutella',
             "page_size": "1",
-        })
+            "json": "1",
+        }).json()
 
         cat_list = []
-
         for cat in result['products'][0]['categories_hierarchy']:
             cat_name = cat.split(':')[-1]
             cat_list.append(cat_name.replace('-', ' '))
@@ -57,8 +59,8 @@ class OpenFoodFacts():
             "tag_0": category,
             "sort_by": "unique_scans",
             "page_size": "1000",
-            "json":"1,"
-        })
+            "json": "1",
+        }).json()
 
         # counter for 10 products of each grades category :
         a_b_grade = 0
@@ -75,7 +77,6 @@ class OpenFoodFacts():
                 'categories_hierarchy',
                 )
         counter = 1
-
         sys.stdout.write(f" !!! {len(search_result['products'])} résultats obtenus pour {category}\n")
 
         for product in search_result['products']:

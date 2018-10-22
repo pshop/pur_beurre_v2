@@ -19,7 +19,8 @@ class OpenFoodAPI():
         search_result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
             "search_terms": search_term,
             "page_size": "1",
-        })
+            "json": "1",
+        }).json()
         # if i find 1 or more products
         if search_result['count'] > 0:
             # i return the first product
@@ -41,8 +42,8 @@ class OpenFoodAPI():
             "tag_1": nutriscore,
             "sort_by": 'unique_scans_n',
             "page_size": "20",
-            "json": 1
-        })
+            "json": "1",
+        }).json()
 
         return search_result['products']
 

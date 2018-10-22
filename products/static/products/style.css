@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i|Scope+One&subset=latin-ext');
+
+html,
+body {
+    font-family: 'Scope One', serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+font-family: 'Open Sans', sans-serif;
+}
+
 #logo > img{
     width:30px;
     padding-right: 5px;
@@ -17,6 +33,12 @@
     fill: #F05F40;
 }
 
+#mainNav.navbar-shrink .navbar-nav #carotte{
+    fill: #212529;
+}
+#mainNav.navbar-shrink .navbar-nav #carotte:hover{
+    fill:#F05F40;
+}
 
 @media (min-width: 992px){
     #carotte {
@@ -71,18 +93,8 @@ border-radius: 0 300px 300px 0;
     margin-top: 1em;
 }
 
-.nutriscore{
-    background: black;
-    width: 2em;
-    height: 2em;
-    text-align: center;
-    line-height: 1.5em;
-    padding: 0.25em;
-    border-radius: 100%;
-    display: inline-block;
-    position: absolute;
-    top: 20px;
-    right: 20px;
+header.masthead {
+    background-image: url("img/header.jpg");
 }
 
 #header-products{
@@ -161,29 +173,46 @@ border-radius: 0 300px 300px 0;
 .img-fluid.background-product {
     width: 80%;
     margin: auto;
+    display: block;
 }
 
-a.portfolio-box {
+.portfolio-box {
     text-decoration: none;
+    min-height: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    user-select: none;
+    align-content: space-between;
 }
 
-a.portfolio-box .portfolio-box-caption {
+.portfolio-box .portfolio-box-caption {
     color: rgba(0, 0, 0, 0.25);
     transition: color 250ms ease-in-out;
     position: static;
     opacity: 1;
     background-color: transparent;
 }
-a.portfolio-box:hover .portfolio-box-caption {
+.portfolio-box:hover .portfolio-box-caption {
     color: rgba(0, 0, 0, 1);
 }
 
 .nutriscore {
-    color: white;
+    background: #86EBE6;
+    color: #345A61;
+    font-family: "Comic Sans MS", serif;
+    font-weight: 700;
+    text-transform: capitalize;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    line-height: 1.5em;
+    padding: 0.25em;
+    border-radius: 100%;
+    display: inline-block;
     position: absolute;
     top: 0;
-    right: 0;
-    transform: translate(-80%, -50%);
+    left: 90%;
+    transform: translate(-50%, -50%);
 }
 
 
@@ -191,8 +220,31 @@ a.portfolio-box:hover .portfolio-box-caption {
     position: relative;
     -webkit-transform: none;
     transform: none;
+    padding-bottom: 2em;
 }
 
 .last-section {
     padding-bottom: 4em !important;
+}
+
+.background-product-desc {
+    width: 100%;
+}
+
+.background-product-desc h2 {
+    font-size: 1.5em;
+}
+
+html [type=button] {
+    -webkit-appearance: none;
+}
+
+@media (min-width: 768px) {
+    header.masthead p {
+        font-size: 1.5rem;
+    }
+}
+
+h3 {
+    color: #DE9440;
 }

@@ -10,7 +10,6 @@ from users.models import CustomUser
 import openfoodfacts
 import logging
 import unidecode
-import inspect
 
 log = logging.getLogger(__name__)
 
