@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-from . import my_vars
+# from . import my_vars
 
 import django_heroku
 
