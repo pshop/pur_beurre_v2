@@ -7,7 +7,6 @@ from .models import Product
 from .openfoodapi import OpenFoodAPI
 from users.models import CustomUser
 
-import openfoodfacts
 import logging
 import unidecode
 
@@ -94,8 +93,9 @@ def product_info(request, product_id):
         product = model_to_dict(product)
     except:
         try:
-            product = openfoodfacts.products.get_product(product_id)
+            product = open_food.get_product_by_id(product_id)
             product = open_food.clean_prod_info(product['product'])
+            log.critical(product)
         except:
             error = True
 
@@ -118,7 +118,7 @@ def save_product(request, product_id):
 
     open_food = OpenFoodAPI()
 
-    product = openfoodfacts.products.get_product(product_id)
+    product = open_food.get_product_by_id(product_id)
     product = open_food.clean_prod_info(product['product'])
 
     product, created = Product.objects.get_or_create(

@@ -11,6 +11,10 @@ class OpenFoodAPI():
     def __init__(self):
         pass
 
+    def get_product_by_id(self, product_id):
+        search_result = requests.get(f'https://fr.openfoodfacts.org/api/v0/produit/{product_id}.json').json()
+        return search_result
+
     def search_product(self, search_term):
 
         # if search for a product with the basic search
