@@ -248,3 +248,29 @@ html [type=button] {
 h3 {
     color: #DE9440;
 }
+
+.fas {
+    font-size: 2em;
+}
+
+.header-background{
+    background-position: center;
+    height: 25em;
+    width: 100%;
+
+}
+.background-login{
+    background-image: url("img/login-bckgrd.jpg");
+}
+
+.background-profile{
+    background-image: url("img/profile-bckgrd.jpg");
+}
+
+.background-favorites{
+    background-image: url("img/favorites-bckgrd.jpg");
+}
+
+.paddind-link{
+    padding-top: 1em;
+}

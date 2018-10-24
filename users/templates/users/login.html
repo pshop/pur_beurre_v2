@@ -1,23 +1,38 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Pur Beurre</title>
-</head>
-<body>
-    <h1>Bienvenue</h1>
+{% extends 'products/base.html' %}
+{% load static %}
 
-    {% if error %}
-        <p><strong>Utilisateur inconnu ou mauvais mot de passe</strong></p>
-    {% endif %}
+{% block content %}
+    <section id="header-products">
+        <div class="container">
+            <div class="justify-content-center row">
+                <div class="col-md-12 text-center header-background background-login">
 
-
-    <form action="{% url 'login_view' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Submit"/>
-    </form>
-    <a href="{% url 'register' %}">créer un compte</a>
-</body>
-</html>
-
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    {% if error %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>Utilisateur inconnu ou mauvais mot de passe</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                    <form action="{% url 'login_view' %}" method="post">
+                        {% csrf_token %}
+                        {{ login_form.as_p }}
+                        <input type="submit" value="Valider"/>
+                    </form>
+                    <div class="paddind-link">
+                        <a href="{% url 'register' %}">créer un compte</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

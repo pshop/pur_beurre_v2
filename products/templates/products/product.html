@@ -17,10 +17,15 @@
     </section>
     <div class="container">
         <div class="row">
-            <div class="col text-center">
+            <div class="col-md-12 text-center">
                 {% if messages %}
                     {% for message in messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <p class="{{ message.tags }}">{{ message }}</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     {% endfor %}
                 {% endif %}
             </div>
@@ -41,17 +46,21 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col text-center">
-                    <a href="https://fr.openfoodfacts.org/produit/{{ prod.id }}">Voir la fiche produit</a>
+                <div class="col text-center paddind-link">
+                    <h2><a href="https://fr.openfoodfacts.org/produit/{{ prod.id }}" target="_blank">Voir la fiche produit</a></h2>
                 </div>
+            </div>
+            <div class="row">
                 {% if user.is_authenticated and not is_favorite %}
-                    <div class="col text-center">
+                    <div class="col text-center paddind-link">
                         <a type="button" class="btn btn-outline-primary" href="{% url 'save_product' prod.id %}"><i
-                                class="fas fa-save"></i><span> Sauvegarder</span></a></div>
+                                class="fas fa-save"></i><span> Sauvegarder</span></a>
+                    </div>
                 {% elif user.is_authenticated and is_favorite %}
-                    <div class="col text-center">
+                    <div class="col text-center paddind-link">
                         <a type="button" class="btn btn-outline-primary" href="{% url 'delete_product' prod.id %}"><i
-                                class="fas fa-times"></i><span> Supprimer des favorits</span></a></div>
+                                class="fas fa-times"></i><span> Supprimer des favorits</span></a>
+                    </div>
                 {% endif %}
             </div>
         </div>

@@ -11,13 +11,15 @@ from .models import CustomUser
 
 
 def login_view(request):
+    form = SearchBar()
+
     error = False
 
     if request.method == "POST":
-        form = LoginForm(request.POST or None)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+        login_form = LoginForm(request.POST or None)
+        if login_form.is_valid():
+            email = login_form.cleaned_data['email']
+            password = login_form.cleaned_data['password']
             user = authenticate(username=email, password=password)
             if user and user.first_name:
                 login(request, user)
@@ -26,27 +28,28 @@ def login_view(request):
             else:
                 error = True
 
-    form = LoginForm()
+    login_form = LoginForm()
     return render(request, 'users/login.html', {
-        'form':form,
-        'error':error,
+        'login_form': login_form,
+        'error': error,
+        'form': form,
     })
 
 
 def register(request):
-
-    form = RegisterForm(request.POST or None)
+    form = SearchBar()
+    register_form = RegisterForm(request.POST or None)
     error = False
 
-    if form.is_valid():
+    if register_form.is_valid():
 
-        if form.cleaned_data['password'] == form.cleaned_data['password_check']:
+        if register_form.cleaned_data['password'] == register_form.cleaned_data['password_check']:
             user = CustomUser.objects.create()
-            user.first_name = form.cleaned_data['username']
-            user.set_password(form.cleaned_data['password'])
-            user.email = form.cleaned_data['email']
+            user.first_name = register_form.cleaned_data['username']
+            user.set_password(register_form.cleaned_data['password'])
+            user.email = register_form.cleaned_data['email']
             user.save()
-            user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+            user = authenticate(username=register_form.cleaned_data['email'], password=register_form.cleaned_data['password'])
             login(request, user)
             return redirect('/')
         else:
