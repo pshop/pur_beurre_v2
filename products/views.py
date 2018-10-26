@@ -154,5 +154,11 @@ def display_favorites(request, user_name):
                       'form': form,
                   })
 
+def legals(request):
+    form = SearchBar()
+    return render(request,
+                  'products/legals.html',
+                  {'form': form})
+
 
 

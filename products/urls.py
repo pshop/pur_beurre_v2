@@ -8,4 +8,5 @@ urlpatterns = [
     path('save/<product_id>', views.save_product, name='save_product'),
     path('delete/<product_id>', views.delete_product, name='delete_product'),
     path('favorites/<user_name>', views.display_favorites, name='display_favorites'),
+    path('legals/', views.legals, name='legals'),
 ]

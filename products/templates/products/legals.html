@@ -1,0 +1,44 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+    <section id="header-products">
+        <div class="container">
+            <div class="justify-content-center row">
+                <div class="col-md-6 text-center">
+                    <div class="background-product" style="background-image: url({{ prod.picture }})">
+                        <div class="background-product-desc">
+                            <h2 class="section-heading">Mentions Légales</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h3>THEME BOOTSTRAP:</h3>
+                    <p><a href="https://startbootstrap.com/template-overviews/creative/">CREATIVE</a> by Start Boostrap</p>
+                    <h3>IMAGES:</h3>
+                    <p>Illustrations et images tirée du <a href="https://www.youtube.com/watch?v=1AMkDrWSnNE">Film Ratatouille</a></p>
+                    <p>Photos des produits extraites de <a href="https://fr.openfoodfacts.org/">OpenFoodFacts</a></p>
+                    <p>Photo page d'accueil par <a href="https://unsplash.com/@gregjnn">Greg Jeanneau</a></p>
+                    <p>Icones du menu extraites de <a href="https://fontawesome.com/">Fontawesome</a></p>
+                    <h3>DEVELOPPEMENT</h3>
+                    <p>Powered by <a href="https://getbootstrap.com/" style="color: #563d7c"><strong>Bootstrap 4</strong></a> et
+                        <a href="https://www.djangoproject.com/" style="color: #0C4B33"><strong>Django 2</strong></a></p>
+                    <p>Données extraites du projet libre <a href="https://fr.openfoodfacts.org/">OpenFoodFacts</a></p>
+                    <p>Hébergement et nom de domaine: <a href="https://www.heroku.com/home" style="color: #AB8ECD"><strong>Heroku</strong></a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
