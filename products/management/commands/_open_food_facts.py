@@ -5,11 +5,11 @@ import re
 import sys
 from termcolor import colored
 import logging
-import pprint
 
 from products.models import Product, Category, Specificity
 
 log = logging.getLogger(__name__)
+
 
 def test_image_url(url):
     """
@@ -27,13 +27,13 @@ def test_image_url(url):
         r = requests.get(url)
         if r.status_code == 200:
             return True
+        else:
+            return False
     else:
         return False
 
 
-
-
-class OpenFoodFacts():
+class OpenFoodFacts:
 
     def get_nutella_categories(self):
 
@@ -118,8 +118,7 @@ class OpenFoodFacts():
                     prod = Product(id=product['code'])
 
                     # testing and saving images URLs
-                    if test_image_url(product['image_front_url']) and\
-                        test_image_url(product['image_nutrition_url']):
+                    if test_image_url(product['image_front_url']) and test_image_url(product['image_nutrition_url']):
                         prod.picture = product['image_front_url']
                         prod.nutrition = product['image_nutrition_url']
                     else:
