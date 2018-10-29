@@ -19,18 +19,18 @@ class OpenFoodAPI():
 
         # if search for a product with the basic search
         # of the openfoodfact api
-        # TODO add limit to search
         search_result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
             "search_terms": search_term,
             "page_size": "1",
             "json": "1",
         }).json()
-        # if i find 1 or more products
-        if search_result['count'] > 0:
-            # i return the first product
-            return search_result['products'][0]
-        else:
-            return False
+
+        # I need the first product with the 'categories_hierarchy' attribute
+        for product in search_result['products']:
+            if 'categories_hierarchy' in product:
+                return product
+
+        return False
 
     def search_by_cat_and_score(self, nutriscore, category):
 
@@ -84,6 +84,8 @@ class OpenFoodAPI():
 
         # i take the result of the search
         initial_product = self.search_product(search_term)
+        log.critical(f"ATTENTION !\n")
+        log.critical(initial_product)
         categories_list = []
         healthy_products_list = []
         nutriscores = ['a', 'b', 'c']
