@@ -95,7 +95,6 @@ def product_info(request, product_id):
         try:
             product = open_food.get_product_by_id(product_id)
             product = open_food.clean_prod_info(product['product'])
-            log.critical(product)
         except:
             error = True
 

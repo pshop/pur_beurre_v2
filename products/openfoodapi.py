@@ -84,8 +84,6 @@ class OpenFoodAPI():
 
         # i take the result of the search
         initial_product = self.search_product(search_term)
-        log.critical(f"ATTENTION !\n")
-        log.critical(initial_product)
         categories_list = []
         healthy_products_list = []
         nutriscores = ['a', 'b', 'c']
