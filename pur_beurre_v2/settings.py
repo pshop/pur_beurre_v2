@@ -13,8 +13,8 @@ import django_heroku
 
 import os
 
-if os.environ.get('ENV') is not 'PRODUCTION':
-    from . import my_vars
+# if os.environ.get('ENV') is not 'PRODUCTION':
+#     from . import my_vars
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,16 +80,16 @@ WSGI_APPLICATION = 'pur_beurre_v2.wsgi.application'
 
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pur_beurre',
-        'USER': 'pur_beurre_admin',
-        'PASSWORD': my_vars.DB_PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'pur_beurre',
+#         'USER': 'pur_beurre_admin',
+#         'PASSWORD': my_vars.DB_PASSWORD,
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation

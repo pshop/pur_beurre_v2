@@ -53,6 +53,7 @@ def display_results(request, data):
     if product:
         # i first try to find 6 better products in base
         results = Product.objects.six_better_products(product[0])
+        results[:] = [model_to_dict(x) for x in results]
 
     # if i find my products i return 'em to the template
     if not results:
@@ -62,13 +63,11 @@ def display_results(request, data):
     searched_prod = open_food.search_product(data)
 
     for result in results:
-        if isinstance(result, Product):
-            result = model_to_dict(result)
-        # if product_is_favorite(result['id'], request.user):
         if product_is_favorite(result['id'], request.user):
             result.update({'is_favorite': True})
         else:
             result.update({'is_favorite': False})
+
 
     if searched_prod:
         return render(request, 'products/results.html', {
