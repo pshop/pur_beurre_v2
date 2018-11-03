@@ -4,4 +4,7 @@ env/
 media/nutrition
 media/pictures
 .idea
-pur_beurre_v2/my_vars.py
+__pycache__
+pur_beurre_v2/staticfiles
+pur_beurre_v2/settings/production.py
+db.sqlite3

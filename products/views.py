@@ -51,14 +51,14 @@ def display_results(request, data):
     product = Product.objects.filter(name__contains=data)
     # if i find the asked product in base
     if product:
+        log.critical(f"PRODUCT[0] {product[0]}")
         # i first try to find 6 better products in base
         results = Product.objects.six_better_products(product[0])
-        results[:] = [model_to_dict(x) for x in results]
-
-    # if i find my products i return 'em to the template
-    if not results:
-        # else i start a request on the web API
-        results = open_food.return_six_healthy_prods(data)
+        log.critical(f"RESULTS {results}")
+        try:
+            results[:] = [model_to_dict(x) for x in results]
+        except TypeError:
+            results = open_food.return_six_healthy_prods(data)
 
     searched_prod = open_food.search_product(data)
 

@@ -2,6 +2,10 @@ from django.db import models
 from django.db.models import Q
 from users.models import CustomUser
 
+import logging
+
+log = logging.getLogger(__name__)
+
 # MANAGERS
 
 
@@ -29,11 +33,12 @@ class ProductManager(models.Manager):
                             returned_products.append(prod)
                         else:
                             break
-
         if len(returned_products) == 6:
             return returned_products
         else:
             return False
+
+
 
 # MODELS
 
