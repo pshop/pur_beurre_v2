@@ -2,13 +2,13 @@ language: python
 python:
     - '3.6.6'
 
-env: DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
-
 services:
     - postgresql
 
 before_script:
     - pip install -r requirement.txt
+
+env: DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
 
 script:
     - python manage.py makemigrations
