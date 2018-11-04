@@ -5,14 +5,12 @@ python:
 before_script:
     - pip install -r requirement.txt
 
-env: DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
+env: DJANGO_SETTINGS_MODULE=pur_beurre_v2.settings.travis
 
 services:
     - postgresql
 
 script:
-    - ./manage.py makemigrations
-    - ./manage.py migrate
     - ./manage.py test
 
 branches:
