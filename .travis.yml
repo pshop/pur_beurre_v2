@@ -16,8 +16,6 @@ env:
     - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
 
 script:
-    - python manage.py makemigrations
-    - python manage.py migrate
     - python manage.py test
 
 branches:
