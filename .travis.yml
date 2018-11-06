@@ -4,7 +4,16 @@ python:
     - '3.6'
 
 addons:
-  postgresql: "10.5"
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+
+env:
+    - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
+    global:
+      - PGPORT=5433
 
 services:
     - postgresql
@@ -12,8 +21,7 @@ services:
 before_script:
     - pip install -r requirement.txt
 
-env:
-    - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
+
 
 script:
     - python manage.py test
