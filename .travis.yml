@@ -11,7 +11,6 @@ services:
 
 before_script:
     - pip install -r requirement.txt
-    - psql -c 'create database travis_ci_test;' -U postgres
 
 env:
     - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
