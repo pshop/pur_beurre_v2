@@ -1,4 +1,3 @@
-# Come on travis wake up
 language: python
 python:
     - '3.6'
@@ -12,8 +11,6 @@ addons:
 
 env:
     - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
-    global:
-      - PGPORT=5433
 
 services:
     - postgresql
