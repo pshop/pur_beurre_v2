@@ -11,6 +11,7 @@ addons:
 
 env:
     - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
+    - DATABASE_URL=postgres://postgres@localhost/travisdb
 
 services:
     - postgresql
