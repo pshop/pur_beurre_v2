@@ -2,27 +2,24 @@ language: python
 python:
     - '3.6'
 
-addons:
-  postgresql: "10"
-  apt:
-    packages:
-    - postgresql-10
-    - postgresql-client-10
-
-env:
-    - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
-    - DATABASE_URL=postgres://postgres@localhost/travisdb
-
-services:
-    - postgresql
+branches:
+    only:
+        - staging
 
 before_script:
     - pip install -r requirement.txt
 
+services:
+    - postgresql
+
+addons:
+  postgresql: "9.6"
+
+env:
+    - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
+
 script:
     - python manage.py test
 
-branches:
-    only:
-        - staging
+
 
