@@ -35,6 +35,16 @@ def test_image_url(url):
 
 class OpenFoodFacts:
 
+    cat_list = [
+        'breakfasts',
+        'spreads',
+        'sweet spreads',
+        'pates a tartiner',
+        'biscuits',
+        'meals',
+        'fresh foods',
+    ]
+
     def get_nutella_categories(self):
 
         result = requests.get('https://fr.openfoodfacts.org/cgi/search.pl', params={
@@ -48,7 +58,7 @@ class OpenFoodFacts:
             cat_name = cat.split(':')[-1]
             cat_list.append(cat_name.replace('-', ' '))
 
-        return cat_list
+        self.cat_list = cat_list
 
     def get_products_by_category(self, category):
 

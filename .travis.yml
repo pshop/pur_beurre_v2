@@ -1,19 +1,24 @@
 language: python
 python:
-    - '3.6.6'
-
-before_script:
-    - pip install -r requirements.txt
-
-env: DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings"
-
-services:
-    - postgresql
-
-script:
-    - ./manage.py test
+    - '3.6'
 
 branches:
     only:
         - staging
+
+before_script:
+    - pip install -r requirement.txt
+
+services:
+    - postgresql
+
+addons:
+  postgresql: "9.6"
+
+env:
+    - DJANGO_SETTINGS_MODULE="pur_beurre_v2.settings.travis"
+
+script:
+    - python manage.py test
+
 
