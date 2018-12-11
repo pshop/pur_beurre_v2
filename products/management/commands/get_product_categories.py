@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        prod=options['product'][0]
+        prod = options['product'][0]
         try:
             prod = Product.objects.get(name=prod)
         except:

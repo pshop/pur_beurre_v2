@@ -22,4 +22,3 @@ script:
     - python manage.py test
 
 
-
