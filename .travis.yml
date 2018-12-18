@@ -5,6 +5,7 @@ python:
 branches:
     only:
         - staging
+        - password
 
 before_script:
     - pip install -r requirements.txt
