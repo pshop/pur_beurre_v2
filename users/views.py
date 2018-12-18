@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 
 from .forms import RegisterForm, LoginForm, PasswordResetForm
 from products.forms import SearchBar
-from .models import CustomUser
+from .models import CustomUser, ResetLink
 
 import logging
 
@@ -88,9 +88,14 @@ def reset_password(request):
     if password_reset_form.is_valid():
         try:
             user = CustomUser.objects.get(email=password_reset_form.cleaned_data['email'])
-            log.critical(f"utilisateur trouvé {user}")
+            link = ResetLink(user=user)
+            link.save()
+
+
+
+
             send_mail('nouveau mot de passe',
-                      'lien unique pour changer le mot de passe',
+                      f"lien unique pour changer le mot de passe : <a href='http://127.0.0.1:8000/{link.link_id}'> LIEN <\\a>",
                       'from@exempale.com',
                       [user.email],
                       fail_silently=False,

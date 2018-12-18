@@ -87,7 +87,7 @@ DATABASES = {
         'USER': 'pur_beurre_admin',
         'PASSWORD': 'dev',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5432',\
     }
 }
 
