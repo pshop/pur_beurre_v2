@@ -7,4 +7,5 @@ media/pictures
 __pycache__
 pur_beurre_v2/staticfiles
 pur_beurre_v2/settings/production.py
+pur_beurre_v2/sent_emails
 db.sqlite3

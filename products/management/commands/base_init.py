@@ -6,6 +6,8 @@ from django.db import IntegrityError
 from products.management.commands._open_food_facts import OpenFoodFacts
 from products.models import Category, Product
 
+import logging
+
 
 class Command(BaseCommand):
     """
@@ -18,6 +20,7 @@ class Command(BaseCommand):
         _ = OpenFoodFacts()
 
         Category.objects.all().delete()
+        logging.critical(type(_.get_nutella_categories()))
         for category in _.get_nutella_categories():
             try:
                 cat = Category(label=category)

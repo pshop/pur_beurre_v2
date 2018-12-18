@@ -35,15 +35,6 @@ def test_image_url(url):
 
 class OpenFoodFacts:
 
-    cat_list = [
-        'breakfasts',
-        'spreads',
-        'sweet spreads',
-        'pates a tartiner',
-        'biscuits',
-        'meals',
-        'fresh foods',
-    ]
 
     def get_nutella_categories(self):
 
@@ -58,7 +49,7 @@ class OpenFoodFacts:
             cat_name = cat.split(':')[-1]
             cat_list.append(cat_name.replace('-', ' '))
 
-        self.cat_list = cat_list
+        return cat_list
 
     def get_products_by_category(self, category):
 

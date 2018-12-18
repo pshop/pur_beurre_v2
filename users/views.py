@@ -1,10 +1,17 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
 
-from .forms import RegisterForm, LoginForm
+
+from .forms import RegisterForm, LoginForm, PasswordResetForm
 from products.forms import SearchBar
 from .models import CustomUser
+
+import logging
+
+log = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -72,5 +79,32 @@ def profile(request, username='superuser'):
 
     else:
         raise Http404
+
+def reset_password(request):
+    form = SearchBar()
+    password_reset_form = PasswordResetForm(request.POST or None)
+    form_validated = False
+
+    if password_reset_form.is_valid():
+        try:
+            user = CustomUser.objects.get(email=password_reset_form.cleaned_data['email'])
+            log.critical(f"utilisateur trouvé {user}")
+            send_mail('nouveau mot de passe',
+                      'lien unique pour changer le mot de passe',
+                      'from@exempale.com',
+                      [user.email],
+                      fail_silently=False,
+            )
+            form_validated = True
+        except ObjectDoesNotExist:
+            form_validated = True
+
+
+
+    return render(request, 'users/password_reset_form.html', {
+        'form': form,
+        'password_reset_form': password_reset_form,
+        'form_validated': form_validated,
+    })
 
 
