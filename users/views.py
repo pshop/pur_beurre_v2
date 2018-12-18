@@ -92,7 +92,7 @@ def reset_password(request):
             link = ResetLink(user=user)
             link.save()
             send_mail('nouveau mot de passe',
-                      f"lien unique pour changer le mot de passe : <a href='http://127.0.0.1:8000/{link.link_id}'> LIEN <\\a>",
+                      f"lien unique pour changer le mot de passe : <a href='http://127.0.0.1:8000/user/{link.link_id}'> LIEN <\\a>",
                       'from@exempale.com',
                       [user.email],
                       fail_silently=False,
@@ -111,6 +111,7 @@ def type_new_password(request, link_id):
     form = SearchBar()
     new_password_form = NewPasswordForm(request.POST or None)
     password_dont_match = False
+    password_updated = False
 
     link = get_object_or_404(ResetLink, link_id=link_id)
     user = CustomUser.objects.get(id=link.user_id)
@@ -119,6 +120,9 @@ def type_new_password(request, link_id):
     if new_password_form.is_valid():
         if new_password_form.cleaned_data['password'] == new_password_form.cleaned_data['password_check']:
             user.set_password(new_password_form.cleaned_data['password'])
+            user.save()
+            password_updated = True
+            ResetLink.objects.filter(user_id=user.id).delete()
         else:
             password_dont_match = True
 
@@ -128,5 +132,6 @@ def type_new_password(request, link_id):
         'form': form,
         'new_password_form': new_password_form,
         'dont_match': password_dont_match,
+        'password_updated': password_updated,
         'link_id': link_id,
     })

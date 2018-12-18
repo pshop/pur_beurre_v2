@@ -6,8 +6,6 @@ from django.utils import timezone
 
 from users.managers import CustomUserManager
 
-from datetime import datetime
-from datetime import timedelta
 import uuid
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
