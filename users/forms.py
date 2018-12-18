@@ -13,3 +13,7 @@ class LoginForm(forms.Form):
 
 class PasswordResetForm(forms.Form):
     email = forms.CharField(max_length=150, label="Email")
+
+class NewPasswordForm(forms.Form):
+    password = forms.CharField(label="Mot de passe", widget=forms.PasswordInput)
+    password_check = forms.CharField(label="Entrez à nouveau votre mot de passe", widget=forms.PasswordInput)

@@ -3,9 +3,10 @@ from django.http import Http404
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404
 
 
-from .forms import RegisterForm, LoginForm, PasswordResetForm
+from .forms import RegisterForm, LoginForm, PasswordResetForm, NewPasswordForm
 from products.forms import SearchBar
 from .models import CustomUser, ResetLink
 
@@ -90,10 +91,6 @@ def reset_password(request):
             user = CustomUser.objects.get(email=password_reset_form.cleaned_data['email'])
             link = ResetLink(user=user)
             link.save()
-
-
-
-
             send_mail('nouveau mot de passe',
                       f"lien unique pour changer le mot de passe : <a href='http://127.0.0.1:8000/{link.link_id}'> LIEN <\\a>",
                       'from@exempale.com',
@@ -104,12 +101,32 @@ def reset_password(request):
         except ObjectDoesNotExist:
             form_validated = True
 
-
-
     return render(request, 'users/password_reset_form.html', {
         'form': form,
         'password_reset_form': password_reset_form,
         'form_validated': form_validated,
     })
 
+def type_new_password(request, link_id):
+    form = SearchBar()
+    new_password_form = NewPasswordForm(request.POST or None)
+    password_dont_match = False
 
+    link = get_object_or_404(ResetLink, link_id=link_id)
+    user = CustomUser.objects.get(id=link.user_id)
+    log.critical(f"UTILISATEUR: {user.first_name}")
+
+    if new_password_form.is_valid():
+        if new_password_form.cleaned_data['password'] == new_password_form.cleaned_data['password_check']:
+            user.set_password(new_password_form.cleaned_data['password'])
+        else:
+            password_dont_match = True
+
+
+
+    return render(request, 'users/type_new_password.html',{
+        'form': form,
+        'new_password_form': new_password_form,
+        'dont_match': password_dont_match,
+        'link_id': link_id,
+    })
