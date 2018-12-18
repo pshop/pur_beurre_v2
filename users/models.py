@@ -2,8 +2,11 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from users.managers import CustomUserManager
+
+import uuid
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, null=True)
@@ -36,3 +39,16 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class ResetLink(models.Model):
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE
+    )
+    link_id = models.CharField(max_length=150)
+    expiration_date = models.DateTimeField(default=timezone.now() + timezone.timedelta(hours=1), blank=True)
+
+    def save(self):
+        if not self.id:
+            self.link_id = uuid.uuid4()
+        super(ResetLink, self).save()
